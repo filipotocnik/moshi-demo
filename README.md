@@ -74,7 +74,85 @@ Moshi je na voljo pod [**Apache License 2.0**](https://github.com/square/moshi/b
 
 ## Demo aplikacija
 
-[PLACEHOLDER - DEMO BO TUKAJ]
+Demo aplikacija prikazuje funkcionalnost Moshi knjižnice spreprostim primerom branja in prikaza filmov iz JSON datoteke.
+
+### 1. Dodajanje odvisnosti
+
+V `build.gradle.kts` dodamo Moshi z codegen podporo:
+
+```kotlin
+dependencies {
+    val moshi_version = "1.15.2"
+    implementation("com.squareup.moshi:moshi:$moshi_version")
+    implementation("com.squareup.moshi:moshi-kotlin:$moshi_version")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshi_version")
+}
+```
+
+### 2. Kreiranje data class modela
+
+```kotlin
+@JsonClass(generateAdapter = true)
+data class Movie(
+    val id: Int,
+    val title: String,
+    val director: String,
+    val year: Int,
+    val rating: Double,
+    val genre: String,
+    @Json(name = "runtime_minutes")
+    val runtimeMinutes: Int,
+    val description: String?
+)
+```
+
+Anotacija `@JsonClass(generateAdapter = true)` omogoči Moshi codegen, `@Json(name = ...)` pa maprira različna imena polj.
+
+### 3. Branje in parsing JSON datoteke
+
+```kotlin
+class MovieRepository(private val context: Context) {
+    
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+    
+    fun loadMovies(): List<Movie> {
+        val jsonString = context.resources.openRawResource(R.raw.movies)
+            .bufferedReader()
+            .use { it.readText() }
+        
+        val type = Types.newParameterizedType(List::class.java, Movie::class.java)
+        val adapter = moshi.adapter<List<Movie>>(type)
+        
+        return adapter.fromJson(jsonString) ?: emptyList()
+    }
+}
+```
+
+### 4. Prikaz v RecyclerView
+
+V `MainActivity` naložimo filme in jih prikažemo:
+
+```kotlin
+private fun loadMovies() {
+    val movies = repository.loadMovies()
+    adapter.submitList(movies)
+    binding.tvMovieCount.text = "Total Movies: ${movies.size}"
+}
+```
+
+### Screenshots - Demo aplikacija
+
+<table>
+  <tr>
+    <th>Seznam filmov</th>
+    <th>Detajl filma</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/demo_movie_list.jpg" width="300"></td>
+  </tr>
+</table>
 
 ---
 
