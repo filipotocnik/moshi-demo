@@ -145,9 +145,7 @@ private fun loadMovies() {
 ### Screenshots - Demo aplikacija
 
 <table>
-  <tr>
     <th>Seznam filmov</th>
-    <th>Detajl filma</th>
   </tr>
   <tr>
     <td><img src="screenshots/demo_movie_list.jpg" width="300"></td>
