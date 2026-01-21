@@ -155,8 +155,8 @@ private fun loadMovies() {
 ---
 
 ## Uporaba v drugi PORA aplikaciji
-
-Pri aplikaciji BenchFinder sem Moshi uporabil za **parsing JSON odgovorov iz Overpass API**, ki vrača podatke o klopeh iz OpenStreetMap baze podatkov. Overpass API vrača JSON strukture z gnezdenimi objekti in seznami.
+Pri aplikaciji [BenchFinder](https://github.com/3-letnik-UN-2025-2026/pora-my-second-app-filipotocnik)
+ sem Moshi uporabil za **parsing JSON odgovorov iz Overpass API**, ki vrača podatke o klopeh iz OpenStreetMap baze podatkov. Overpass API vrača JSON strukture z gnezdenimi objekti in seznami.
 
 ### 1. Dodajanje dependency
 
@@ -271,7 +271,7 @@ private fun buildNotes(tags: Map<String, String>): String? {
 }
 ```
 
-### 4. Uporaba z Retrofit in OkHttp
+### 4. Uporaba z OkHttp
 
 V `OverpassService` sem Moshi integriral s klicem na Overpass API:
 
